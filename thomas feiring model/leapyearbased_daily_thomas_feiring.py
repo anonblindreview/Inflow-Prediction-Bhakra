@@ -31,7 +31,7 @@ lag=df['co relation']
 np.random.seed(9001)
 for j in range(number_of_years):
     number_of_days+=increment_year(year+j)
-print("total number of days",number_of_days)
+print("total number of days",number_of_days,",,")
 print("Day,Year,Inflow")
 for i in range(number_of_days):
     rn=np.random.normal(0,1,1)[0]
