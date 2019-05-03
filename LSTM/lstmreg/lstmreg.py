@@ -3,13 +3,14 @@ import numpy
 from pandas import read_csv
 import math
 from keras.models import Sequential
+from keras.models import load_model
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.callbacks import TensorBoard
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 # convert an array of values into a dataset matrix
-def create_dataset(dataset, look_back=1):
+def create_dataset(dataset, look_back=3):
 	dataX, dataY = [], []
 	for i in range(len(dataset)-look_back-1):
 		a = dataset[i:(i+look_back), 0]
@@ -30,7 +31,7 @@ train_size = int(len(dataset) * 0.67)
 test_size = len(dataset) - train_size
 train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 # reshape into X=t and Y=t+1
-look_back = 1
+look_back = 3
 trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 # reshape input to be [samples, time steps, features]
@@ -44,10 +45,13 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=100, batch_size=1,validation_data=(testX, testY), verbose=2,callbacks=[tensorboard])
+model.fit(trainX, trainY, epochs=10, batch_size=1,validation_data=(testX, testY), verbose=2,callbacks=[tensorboard])
+model.reset_states()
 # make predictions
-trainPredict = model.predict(trainX)
-testPredict = model.predict(testX)
+model.save('mymodel.h5')
+trainPredict = model.predict(trainX, batch_size=batch_size)
+model.reset_states()
+testPredict = model.predict(testX, batch_size=batch_size)
 # invert predictions
 trainPredict = scaler.inverse_transform(trainPredict)
 trainY = scaler.inverse_transform([trainY])

@@ -53,7 +53,7 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 reset=ResetStateCallback()
 #for i in range(100):
-model.fit(trainX, trainY, epochs=100, batch_size=batch_size,validation_data=(testX, testY),callbacks=[tensorboard,reset], verbose=2, shuffle=False)
+model.fit(trainX, trainY, epochs=10, batch_size=batch_size,validation_data=(testX, testY),callbacks=[tensorboard,reset], verbose=2, shuffle=False)
 model.reset_states()
 # make predictions
 trainPredict = model.predict(trainX, batch_size=batch_size)
