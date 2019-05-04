@@ -11,7 +11,7 @@ matplotlib
 sklearn
 ```
 # How to run
-Install anaconda from (http://anaconda.org) on your pc and run following commands
+Install anaconda from [this](http://anaconda.org) on your pc and run following commands
 ```bash
 conda create --name tf-gpu
 conda activate tf-gpu
@@ -29,7 +29,7 @@ git clone https://github.com/Anurag14/Inflow-Prediction-Bhakra
 cd Inflow-Prediction-Bhakra
 ```
 # To auto generate model graphs
-download graphviz2.38 from https://graphviz.gitlab.io/  then add its executable to $PATH variable
+download graphviz2.38 from [here](https://graphviz.gitlab.io/)  then add its executable to $PATH variable
 ```python
 import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
@@ -39,7 +39,15 @@ or run following if above doesn't seem to work
 pip install pydot
 conda install graphviz
 ```
-### Update: As of writing this library there seems to be a open issue here(https://github.com/keras-team/keras/issues/12640)
+#### Update: As of writing this library there seems to be a open issue [here](https://github.com/keras-team/keras/issues/12640)
+Same quick fix is applied by hacking into the keras library ../keras/utils/vis_utils.py and change 
+```python
+ import pydot
+``` 
+to 
+```python
+import pydot_ng as pydot
+```
 Then run LSTM/predict.py
 ```bash
 python LSTM/predict.py
