@@ -28,4 +28,10 @@ Then run to download the git repository
 git clone https://github.com/Anurag14/Inflow-Prediction-Bhakra
 cd Inflow-Prediction-Bhakra
 ```
+# To auto generate model graphs
+download graphviz from https://graphviz.gitlab.io/
+```python
+import os
+os.environ["PATH"] += os.pathsep + 'D:/Program Files (x86)/Graphviz2.38/bin/'
+```
 # Enjoy!
