@@ -39,6 +39,7 @@ or run following if above doesn't seem to work
 pip install pydot
 conda install graphviz
 ```
+### Update: As of writing this library there seems to be a open issue here(https://github.com/keras-team/keras/issues/12640)
 Then run LSTM/predict.py
 ```bash
 python LSTM/predict.py
