@@ -4,7 +4,7 @@ import pandas as pd
 import seaborn as sns
 df=pd.read_csv('../data1.csv',usecols=[0],engine='python', skipfooter=3)
 dates=df.values
-f=np.load('../stacked_lstm/outfile.npz')
+f=np.load('outfile.npz')
 #seaborn styling 
 sns.set_style('darkgrid')
 
