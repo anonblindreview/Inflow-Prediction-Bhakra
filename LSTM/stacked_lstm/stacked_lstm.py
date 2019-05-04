@@ -58,6 +58,8 @@ reset=ResetStateCallback()
 #for i in range(100):
 model.fit(trainX, trainY, epochs=total_epochs, batch_size=batch_size,validation_data=(testX, testY),callbacks=[tensorboard,reset], verbose=2, shuffle=False)
 model.reset_states()
+#save weigths
+model.save("../weights/stacked_lstm.h5")
 # make predictions
 trainPredict = model.predict(trainX, batch_size=batch_size)
 print("trainPredict.shape",trainPredict.shape)
