@@ -1,6 +1,6 @@
 # Stacked LSTM for international airline passengers problem with memory
-import numpy
-import matplotlib.pyplot as plt
+import numpy,sys
+#import matplotlib.pyplot as plt
 from pandas import read_csv
 import math
 from tensorflow.python import keras
@@ -24,6 +24,7 @@ def create_dataset(dataset, look_back=1):
 # fix random seed for reproducibility
 numpy.random.seed(7)
 # load the dataset
+total_epochs=int(sys.argv[1])
 dataframe = read_csv('../data1.csv',usecols=[2], engine='python', skipfooter=3)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
@@ -41,11 +42,13 @@ testX, testY = create_dataset(test, look_back)
 # reshape input to be [samples, time steps, features]
 trainX = numpy.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 testX = numpy.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+print("trainX.shape",trainX.shape,"trainY.shape",trainY.shape)
+print("testX.shape",testX.shape,"testY.shape",testY.shape)
 #create a tensorboard object for logging purpose 
 tensorboard = TensorBoard(log_dir='./logs', histogram_freq=0,
                           write_graph=True, write_images=False)
 # create and fit the LSTM network
-batch_size = 1
+batch_size = 15
 model = Sequential()
 model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True, return_sequences=True))
 model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True))
@@ -53,22 +56,24 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 reset=ResetStateCallback()
 #for i in range(100):
-model.fit(trainX, trainY, epochs=10, batch_size=batch_size,validation_data=(testX, testY),callbacks=[tensorboard,reset], verbose=2, shuffle=False)
+model.fit(trainX, trainY, epochs=total_epochs, batch_size=batch_size,validation_data=(testX, testY),callbacks=[tensorboard,reset], verbose=2, shuffle=False)
 model.reset_states()
 # make predictions
 trainPredict = model.predict(trainX, batch_size=batch_size)
+print("trainPredict.shape",trainPredict.shape)
 model.reset_states()
 testPredict = model.predict(testX, batch_size=batch_size)
+print("testPredict.shape",testPredict.shape)
+# calculate root mean squared error
+trainScore = math.sqrt(mean_squared_error(trainY, trainPredict[:,0]))
+print('Train Score: %.2f RMSE' % (trainScore))
+testScore = math.sqrt(mean_squared_error(testY, testPredict[:,0]))
+print('Test Score: %.2f RMSE' % (testScore))
 # invert predictions
 trainPredict = scaler.inverse_transform(trainPredict)
 trainY = scaler.inverse_transform([trainY])
 testPredict = scaler.inverse_transform(testPredict)
 testY = scaler.inverse_transform([testY])
-# calculate root mean squared error
-trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
-print('Train Score: %.2f RMSE' % (trainScore))
-testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
-print('Test Score: %.2f RMSE' % (testScore))
 # shift train predictions for plotting
 trainPredictPlot = numpy.empty_like(dataset)
 trainPredictPlot[:, :] = numpy.nan
