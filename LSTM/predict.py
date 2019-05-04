@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import math
 from tensorflow.python import keras
 from keras.models import load_model
+from keras.utils.vis_utils import plot_model
 #loading model
 def create_dataset(dataset, look_back=3):
 	dataX, dataY = [], []
@@ -14,6 +15,7 @@ def create_dataset(dataset, look_back=3):
 path=input("what is type of model you wish to load?")
 model.load("weigths/"+path+".h5")
 print(model.summary())
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 batch_size=1
 dataset=[1,2,3,4]
 trainX=create_dataset(dataset)
