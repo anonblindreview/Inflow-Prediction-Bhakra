@@ -29,16 +29,17 @@ git clone https://github.com/Anurag14/Inflow-Prediction-Bhakra
 cd Inflow-Prediction-Bhakra
 ```
 # To auto generate model graphs
-download graphviz2.38 from [here](https://graphviz.gitlab.io/)  then add its executable to $PATH variable
+download graphviz2.38 from [here](https://graphviz.gitlab.io/)  then add its executable to $PATH variable.
 ```python
 import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 ```
 or run following if above doesn't seem to work
 ```bash
-pip install pydot
+pip install pydot_ng
 conda install graphviz
 ```
+#### TL;DR install graphviz via conda and add its path to $PATH instead of building it from base.
 #### Update: As of writing this library there seems to be a open issue [here](https://github.com/keras-team/keras/issues/12640)
 Same quick fix is applied by hacking into the keras library ../keras/utils/vis_utils.py and change 
 ```python
