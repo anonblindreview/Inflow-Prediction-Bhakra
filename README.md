@@ -34,6 +34,11 @@ download graphviz2.38 from https://graphviz.gitlab.io/  then add its executable 
 import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 ```
+or run following if above doesn't seem to work
+```bash
+pip install pydot
+conda install graphviz
+```
 Then run LSTM/predict.py
 ```bash
 python LSTM/predict.py
