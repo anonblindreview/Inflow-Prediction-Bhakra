@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 # fix random seed for reproducibility
 np.random.seed(7)
 # load the dataset
-dataframe = read_csv('data1.csv', usecols=[2], engine='python', skipfooter=3)
+dataframe = read_csv('../data1.csv', usecols=[2], engine='python', skipfooter=3)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 # normalize the dataset
