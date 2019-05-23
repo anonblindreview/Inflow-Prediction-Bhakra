@@ -4,7 +4,7 @@ from pandas import read_csv
 from sklearn.preprocessing import MinMaxScaler
 def create_dataset(dataset, look_back=1):
     dataX, dataY = [], []
-    for i in range(len(dataset)-look_back-1):
+    for i in range(len(dataset)-look_back):
         a = dataset[i:(i+look_back)]
         dataX.append(a)
         dataY.append(dataset[i + look_back])
@@ -20,7 +20,7 @@ dataframe1 = read_csv('../data observed.csv', usecols=[5],engine='python', skipf
 dataframe.append(dataframe1,ignore_index = True)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
-
+print(dataframe1)
 ######### NORMALIZE THE DATASET ################
 scaler = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
@@ -32,15 +32,12 @@ model=load_model("../weights/"+path+".h5")
 print(model.summary())
 batch_size=int(input("Enter batch size"))
 look_back=3
-number_of_predictions=len(dataframe1)-look_back-1
+number_of_predictions=len(dataframe1)-look_back+1
 entries=dataset[-len(dataframe1):]
 buffer=batch_size-(number_of_predictions)%batch_size
-print("buffer length",buffer)
-print("ghusne waale ki shape without buffer",entries.shape)
 if buffer>0:
     ex=dataset[-buffer:]
     entries=np.append(ex,entries)
-print("ghusne waale ki shape",entries.shape)
 trainX, trainY = create_dataset(entries, look_back)
 trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 print(trainX.shape)
