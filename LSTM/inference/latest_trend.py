@@ -46,6 +46,5 @@ testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 ######### RUN THE MODEL ########################
 testPredict = model.predict(testX, batch_size=batch_size)
 testPredict = scaler.inverse_transform(testPredict)
-for index in range(number_of_predictions):
-    print(f"input: {testX[index]} prediction: {testPredict[index]}")
+print(testPredict[:number_of_predictions])
 
