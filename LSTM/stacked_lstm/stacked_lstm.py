@@ -48,7 +48,7 @@ print("testX.shape",testX.shape,"testY.shape",testY.shape)
 tensorboard = TensorBoard(log_dir='./logs', histogram_freq=0,
                           write_graph=True, write_images=False)
 # create and fit the LSTM network
-batch_size = 15
+batch_size = 1
 model = Sequential()
 model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True, return_sequences=True))
 model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True))

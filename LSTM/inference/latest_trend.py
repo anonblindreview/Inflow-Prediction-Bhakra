@@ -20,7 +20,6 @@ dataframe1 = read_csv('../data observed.csv', usecols=[5],engine='python', skipf
 dataframe.append(dataframe1,ignore_index = True)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
-print(dataframe1)
 ######### NORMALIZE THE DATASET ################
 scaler = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
@@ -32,21 +31,21 @@ model=load_model("../weights/"+path+".h5")
 print(model.summary())
 
 ######### MODEL DATA FEEDING ###################
-train_size = int(len(dataset) -len(dataframe1))
-test_size = len(dataset) - train_size
-train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
+test = dataset[-len(dataframe1):,:]
 batch_size=int(input("Enter batch size"))
 look_back=3
-number_of_predictions=len(dataframe1)-look_back+1
-entries=dataset[-len(dataframe1):]
+number_of_predictions=len(dataframe1)-look_back
+print(f"batch size: {batch_size} number of predictions: {number_of_predictions}")
 buffer=batch_size-(number_of_predictions)%batch_size
+print(f"buffer: {buffer}")
 if buffer>0:
     ex=dataset[-buffer:]
-    entries=np.append(ex,entries)
+    test=np.append(ex,test)
 testX, testY = create_dataset(test, look_back)
-testX = numpy.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 ######### RUN THE MODEL ########################
 testPredict = model.predict(testX, batch_size=batch_size)
 testPredict = scaler.inverse_transform(testPredict)
-print(testPredict)
+for index in range(number_of_predictions):
+    print(f"input: {testX[index]} prediction: {testPredict[index]}")
 
