@@ -6,7 +6,7 @@ import pandas as pd
 year=2019
 number_of_days=365
 day=0
-df = pd.read_csv('../LSTM/groundtruth.csv')
+df = pd.read_csv('groundtruth.csv')
 u=df['Mean']
 X_t= u[0]
 sd=df['St dev']

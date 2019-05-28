@@ -30,6 +30,11 @@ dataset = scaler.fit_transform(dataset)
 path=input("what is type of model you wish to load?")
 model=load_model("../weights/"+path+".h5")
 print(model.summary())
+
+######### MODEL DATA FEEDING ###################
+train_size = int(len(dataset) -len(dataframe1))
+test_size = len(dataset) - train_size
+train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 batch_size=int(input("Enter batch size"))
 look_back=3
 number_of_predictions=len(dataframe1)-look_back+1
@@ -38,13 +43,10 @@ buffer=batch_size-(number_of_predictions)%batch_size
 if buffer>0:
     ex=dataset[-buffer:]
     entries=np.append(ex,entries)
-trainX, trainY = create_dataset(entries, look_back)
-trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
-print(trainX.shape)
+testX, testY = create_dataset(test, look_back)
+testX = numpy.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 ######### RUN THE MODEL ########################
-trainPredict = model.predict(trainX)
-trainScore = math.sqrt(mean_squared_error(trainY, trainPredict[:,0]))
-print('Train Score: %.2f RMSE' % (trainScore))
-dataset[-len(trainPredict):]=trainPredict.reshape(dataset.shape)
-print(scaler.inverse_transform(dataset)[-len(trainPredict):])
+testPredict = model.predict(testX, batch_size=batch_size)
+testPredict = scaler.inverse_transform(testPredict)
+print(testPredict)
 
